@@ -1,4 +1,3 @@
-
 \documentclass[12pt]{article}
  \usepackage{blkarray}
 \usepackage[margin=1in]{geometry} 
@@ -13,7 +12,7 @@
 \usepackage{pgfplots}
 \usepackage{amsmath}
 \usepackage[mathscr]{euscript}
-\let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
+\let\euscr\mathscr\let\mathscr\relax% just so we can load this and rsfs
 \usepackage[scr]{rsfso}
 \usepackage{amsthm}
 \usepackage{amssymb}
@@ -50,25 +49,56 @@ citecolor=blue, urlcolor=blue]{hyperref}
 
 \lhead{Pemrograman Fungsional}
 \chead{Proyek Akhir}
-\rhead{19 Oktober 2025}
+\rhead{Last Update: \color{red}19-08-2025}
 \begin{center}
     \Large
 \textbf{Perencanaan Proyek Akhir Pemrograman Fungsional}
-\textbf{Sistem Simulasi Ekosistem-Evolusi}\\
+\textbf{Model Simulasi Ekosistem Evolusi di Haskell}\\
 Proyek Individu\\
 Pandu Adjie Sukarno (2206026826)
 \end{center}
-\noindent Berikut adalah beberapa fitur yang ada di sistem simulasi ini
-\section{Lingkungan}
+\noindent Proyek ini terinspirasi dari beberapa video YouTube yang saya suka mengenai simulasi biologi. 
+\begin{enumerate}
+    \item \href{https://youtube.com/playlist?list=PLKortajF2dPBWMIS6KF4RLtQiG6KQrTdB&si=hqaZhZ-h92zkJozj}{Primer - Evolution Playlist}
+    \item \href{https://youtu.be/f7vH2Li9KOw?si=k78nDUqfp5TPhn00}{Icoso - I Made an Evolution Simulator (with silly little guys)}
+    \item \href{https://youtu.be/r_It_X7v-1E?si=YXpYhTIrnf76xXY_}{Sebastian Lague - Coding Adventure: Simulating an Ecosystem}
+\end{enumerate}
+Berikut adalah fitur-fitur yang ada di model simulasi yang saya buat.
+\section{Lingkungan (\texttt{Environment})}
+\texttt{Environment} merupakan dunia dari simulasi ini. \texttt{Environment} didefinisikan sebagai \textit{grid} berukuran $x\times y$. Setiap populasi spesies akan tersebar di dalam \textit{grid} ini dan tidak bisa melewati batas \textit{grid} (dunia tidak \textit{loop}). 
+
+\noindent Setiap \textit{grid} bisa berisi semak makanan (\texttt{foodBush}), air (\texttt{water}), atau \textit{grid} kosong (\texttt{empty}). \texttt{foodBush} akan di-\textit{generate} secara acak diseluruh \textit{grid} saat awal program berjalan dan setiap beberapa waktu. \texttt{water} hanya di-\textit{generate} di awal program dijalankan dan \textit{grid}-nya bersifat terkluster. 
+
+\noindent Suatu \texttt{Environment} memiliki batas maksimal untuk \texttt{foodBush} dan \texttt{water} yang bisa di-\textit{generate}. Untuk \texttt{foodBush}, batas maksimalnya adalah \texttt{maxFoodBushGenerated} dalam integer. Sedangkan untuk \texttt{water}, batas maksimalnya adalah \texttt{maxWaterGenerated} dalam persentase, yaitu persentase dari keseluruhan \textit{grid} yang di-\textit{generate} merupakan \texttt{water}.
+
 \begin{itemize}
-    \item foodBush
+    \item \texttt{sizeX::Integer}
+    \item \texttt{sizeY::Integer}
+    \item \texttt{MaxFoodBushGenerated::Integer}
+    \item \texttt{MaxWaterGenerated::Float}
+    \item 
+\end{itemize}
+\section{Sumber Daya}
+\begin{itemize}
     \item fruit
     \item carcass
     \item water
-    \item seasonState
-    \item 
 \end{itemize}
 \section{Spesies}
+\begin{itemize}
+    \item gender
+    \item status 
+    \item lifeSpan
+\end{itemize}
+\section{Individu-Predator}
+\begin{itemize}
+    \item hungerBar
+    \item ThirstBar
+    \item energyBar
+    \item sightRange
+    \item strength
+\end{itemize}
+\section{Individu-Prey}
 \begin{itemize}
     \item hungerBar
     \item ThirstBar
