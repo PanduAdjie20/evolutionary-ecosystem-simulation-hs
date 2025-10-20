@@ -48,7 +48,7 @@ citecolor=blue, urlcolor=blue]{hyperref}
 
 \lhead{Pemrograman Fungsional}
 \chead{Proyek Akhir}
-\rhead{Last Update: \color{red}19-08-2025}
+\rhead{Last Update: \color{red}20-08-2025}
 \begin{center}
     \Large
 \textbf{Perencanaan Proyek Akhir Pemrograman Fungsional}
@@ -72,8 +72,7 @@ Model simulasi akan berjalan menggunakan satuan waktu diskrit. Dalam satu waktu,
 
 \noindent Berikut semua konfigurasi awal untuk \texttt{Environment}:
 \begin{itemize}
-    \item \texttt{sizeX::Integer}
-    \item \texttt{sizeY::Integer}
+    \item \texttt{environmentSize::(Integer, Integer)}
     \item \texttt{maxWaterGenerated::Float}
     \item \texttt{environmentSeed::Integer}
 \end{itemize}
@@ -98,7 +97,7 @@ Terdapat tiga jenis sumber daya yang bisa muncul di dalam lingkungan, yaitu buah
 \begin{itemize}
     \item \texttt{maxFruitBushGenerated::Integer}
     \item \texttt{probFruitBushGenerated::Float }
-    \item \texttt{meanFruitGenerated::Integer}
+    \item \texttt{avgFruitGenerated::Integer}
     \item \texttt{fruitBushLifeSpan::Integer}
     \item \texttt{fruitBushSeed::Integer}
 \end{itemize}
@@ -111,29 +110,49 @@ Terdapat tiga jenis sumber daya yang bisa muncul di dalam lingkungan, yaitu buah
 \subsection{Mayat Hewan (\texttt{corpse})}
 Setiap kali ada hewan yang mati, entah karena diburu atau kehabisan energi, \texttt{corpse} akan muncul. Ketika muncul, \texttt{meat} juga akan otomatis di-\textit{generate} secara acak dengan rata-rata banyaknya daging berdasarkan ukuran dari hewan tersebut.
 
-\noindent Setiap \texttt{corpse} juga memiliki umur. Apabila sudah melewati batas umurnya, maka \texttt{corpse} akan menghilang dari lingkungan beserta daging di dalamnya.
-\noindent Berikut semua konfigurasi awal untuk semua \texttt{fruitBush}:
+\noindent Setiap \texttt{corpse} juga memiliki durasi sebelum membusuk. Apabila sudah melewati batas umurnya, maka \texttt{corpse} akan menghilang dari lingkungan beserta daging di dalamnya.
+\noindent Berikut semua konfigurasi awal untuk semua \texttt{corpse}:
 \begin{itemize}
-    \item \texttt{meanMeatGenerated::Integer}
     \item \texttt{corpseLifeSpan::Integer}
-    \item \texttt{corpseSeed::Integer}
 \end{itemize}
-\noindent Berikut semua data di satuan \texttt{fruitBush} yang bersifat dinamik atau bisa berubah seiring berjalannya waktu
+\noindent Berikut semua data di satuan \texttt{corpse} yang bersifat dinamik atau bisa berubah seiring berjalannya waktu
 \begin{itemize}
     \item \texttt{age::Integer}
     \item \texttt{gridPosition::(Integer, Integer)}
     \item \texttt{meatCount::Integer}
 \end{itemize}
-\section{Spesies}
+\section{\texttt{Spesies}}
+Sebelum simulasi dimulai, kita bisa mendefinisikan spesies yang akan di simulasikan. Setiap spesies memiliki stat dasar dan variansi yang nantinya menjadi mean dan variansi dari distribusi normal untuk stat setiap makhluk hidup yang merupakan bagian dari spesies tersebut. Berikut adalah stat yang memerlukan konfigurasi awal untuk setiap spesies: 
 \begin{itemize}
-    \item gender
-    \item status 
-    \item lifeSpan
+    \item \texttt{spesiesId::Integer} -- ID dari spesies untuk mempermudah pengambilan data
+    \item \texttt{spesiesName::String} -- Nama spesies
+    \item \texttt{spesiesSeed::Integer} -- Seed untuk RNG
+    \item \texttt{spesiesRole::Role\{Predator|Prey\}} -- Peran spesies dalam lingkungan, yaitu sebagai mangsa atau pemangsa
+    \item \texttt{baseLearningRate::Double} -- Nilai rata-rata untuk menentukan seberapa cepat otak spesies belajar dan beradaptasi dari lingkungannya
+    \item \texttt{varLearningRate::Double} -- variansi laju kecepatan otak makhluk hidup belajar
+    \item \texttt{baseDiscountFactor::Double} -- Nilai rata-rata untuk mengontrol seberapa peduli spesies dengan \textit{reward} instan atau \textit{reward} jangka panjang
+    \item \texttt{varDiscountFactor::Double} -- variansi faktor diskon 
+    \item \texttt{baseLongevity::Integer} -- Rata-rata durasi kehidupan spesies dalam satuan waktu simulasi.
+    \item \texttt{varLongevity::Integer} -- Variansi durasi kehidupan antar makhluk hidup dalam satu spesies
+    \item \texttt{baseSpeed::Integer} -- Rata-rata kecepatan spesies dalam satuan \textit{grid} per waktu simulasi. Menggambarkan berapa banyak \textit{grid} yang bisa ditempuh spesies ketika bergerak dalam satu satuan waktu simulasi.
+    \item \texttt{varSpeed::Integer} -- Variansi kecepatan spesies antar makhluk hidup dalam satu spesies
+    \item \texttt{baseSenseRange::Integer} -- Rata-rata diameter rentang penglihatan spesies dalam satuan grid. Menggambarkan seberapa jauh makhluk hidup dapat mendeteksi sumber daya atau makhluk hidup lain di sekitarnya
+    \item \texttt{varSenseRange::Integer} -- Variansi diameter rentang penglihatan antar makhluk hidup dalam satu spesies
+    \item \texttt{baseMaxInventory::Integer} -- Rata-rata kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies dalam satuan sumber daya
+    \item \texttt{varMaxInventory::Integer} -- Variansi kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies
+    \item \texttt{baseSize::Double} -- Rata-rata ukuran spesies
+    \item \texttt{varSize::Double} -- Variansi ukuran spesies
+    \item \texttt{baseStrength::Double} -- Rata-rata kekuatan spesies
+    \item \texttt{varStrength::Double} -- Variansi kekuatan spesies
+    \item \texttt{baseEmpathy::Double} -- Rata-rata empati yang dimiliki spesies. Empati menunjukkan seberapa peduli suatu makhluk hidup dengan makhluk hidup lainnya dalam satu spesies
+    \item \texttt{varEmpathy::Double} -- Variansi empati antar makhluk hidup dalam satu spesies
+
 \end{itemize}
 \section{Individu-Predator}
 \begin{itemize}
     \item hungerBar
     \item ThirstBar
+    \item \texttt{gender::Gender\{Male|Female\}}
     \item energyBar
     \item sightRange
     \item strength
