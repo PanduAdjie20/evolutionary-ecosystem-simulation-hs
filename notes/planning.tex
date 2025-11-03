@@ -53,8 +53,7 @@ citecolor=blue, urlcolor=blue]{hyperref}
     \Large
 \textbf{Perencanaan Proyek Akhir Pemrograman Fungsional}
 \textbf{Model Simulasi Ekosistem Evolusi di Haskell}\\
-Proyek Individu\\
-Pandu Adjie Sukarno (2206026826)
+Proyek Individu
 \end{center}
 \section{Topik}
 \noindent \textbf{Topik Utama: Model Simulasi Ekosistem Evolusi di Haskell}\\ 
@@ -69,7 +68,12 @@ Pandu Adjie Sukarno (2206026826)
 \end{enumerate}
 Proyek ini merupakan upaya saya untuk membuat model seperti pada tautan di atas menggunakan konsep pemrograman fungsional. Beberapa fitur yang saya rencanakan di bawah kemungkinan ada yang berubah seiring berjalannya progress pengerjaan. Berikut adalah rencana awal untuk fitur-fitur yang ada di model simulasi yang saya buat.
 \subsection{Waktu}
-Model simulasi akan berjalan menggunakan satuan waktu diskrit. Dalam satu waktu, akan terjadi berbagai macam kejadian (sesuai dengan yang akan dijelaskan berikutnya), kemudian baru lanjut ke waktu berikutnya. 
+\begin{enumerate}
+    \item Model simulasi akan berjalan menggunakan satuan waktu diskrit.
+    \item Dalam satu waktu, akan terjadi berbagai macam kejadian (sesuai dengan yang akan dijelaskan berikutnya), kemudian baru lanjut ke waktu berikutnya.
+    \item Transisi dari waktu $n$ ke $n+1$ dijalankan menggunakan suatu fungsi transisi \texttt{::World -> World}. Semua kejadian pada suatu waktu dijalankan di dalam fungsi transisi tersebut.
+\end{enumerate}
+  
 \subsection{Lingkungan (\texttt{Environment})}
 \texttt{Environment} merupakan dunia dari simulasi ini. \texttt{Environment} didefinisikan sebagai \textit{grid} berukuran $x\times y$. Setiap populasi spesies akan tersebar di dalam \textit{grid} ini dan tidak bisa melewati batas \textit{grid} (dunia tidak \textit{loop}). 
 
@@ -77,16 +81,16 @@ Model simulasi akan berjalan menggunakan satuan waktu diskrit. Dalam satu waktu,
 
 \noindent Berikut semua konfigurasi awal untuk \texttt{Environment}:
 \begin{itemize}
-    \item \texttt{environmentSize::(Integer, Integer)}
+    \item \texttt{environmentSize::(Int, Int)}
     \item \texttt{maxWaterGenerated::Float}
-    \item \texttt{environmentSeed::Integer}
+    \item \texttt{environmentSeed::Int}
 \end{itemize}
 
 \noindent Berikut semua data di \texttt{Environment} yang bersifat dinamik atau bisa berubah seiring berjalannya waktu
 \begin{itemize}
-    \item \texttt{time::Integer}
-    \item \texttt{fruitBushCount::Integer}
-    \item \texttt{animalCount::Integer}
+    \item \texttt{time::Int}
+    \item \texttt{fruitBushCount::Int}
+    \item \texttt{animalCount::Int}
 \end{itemize}
 \subsection{Sumber Daya (\texttt{Resources})}
 Terdapat tiga jenis sumber daya yang bisa muncul di dalam lingkungan, yaitu buah (\texttt{fruit}), daging (\texttt{meat}), dan air (\texttt{water}). Air bisa muncul secara tak terbatas di seluruh \textit{tiles} \texttt{water}, sedangkan buah dan daging memiliki tempat khusus untuk muncul.
@@ -100,17 +104,17 @@ Terdapat tiga jenis sumber daya yang bisa muncul di dalam lingkungan, yaitu buah
 
 \noindent Berikut semua konfigurasi awal untuk semua \texttt{fruitBush}:
 \begin{itemize}
-    \item \texttt{maxFruitBushGenerated::Integer}
+    \item \texttt{maxFruitBushGenerated::Int}
     \item \texttt{probFruitBushGenerated::Float }
-    \item \texttt{avgFruitGenerated::Integer}
-    \item \texttt{fruitBushLifeSpan::Integer}
-    \item \texttt{fruitBushSeed::Integer}
+    \item \texttt{avgFruitGenerated::Int}
+    \item \texttt{fruitBushLifeSpan::Int}
+    \item \texttt{fruitBushSeed::Int}
 \end{itemize}
 \noindent Berikut semua data di satuan \texttt{fruitBush} yang bersifat dinamik atau bisa berubah seiring berjalannya waktu
 \begin{itemize}
-    \item \texttt{age::Integer}
-    \item \texttt{gridPosition::(Integer, Integer)}
-    \item \texttt{fruitCount::Integer}
+    \item \texttt{age::Int}
+    \item \texttt{gridPosition::(Int, Int)}
+    \item \texttt{fruitCount::Int}
 \end{itemize}
 \subsubsection{Mayat Hewan (\texttt{corpse})}
 Setiap kali ada hewan yang mati, entah karena diburu atau kehabisan energi, \texttt{corpse} akan muncul. Ketika muncul, \texttt{meat} juga akan otomatis di-\textit{generate} secara acak dengan rata-rata banyaknya daging berdasarkan ukuran dari hewan tersebut.
@@ -118,33 +122,33 @@ Setiap kali ada hewan yang mati, entah karena diburu atau kehabisan energi, \tex
 \noindent Setiap \texttt{corpse} juga memiliki durasi sebelum membusuk. Apabila sudah melewati batas umurnya, maka \texttt{corpse} akan menghilang dari lingkungan beserta daging di dalamnya.
 \noindent Berikut semua konfigurasi awal untuk semua \texttt{corpse}:
 \begin{itemize}
-    \item \texttt{corpseLifeSpan::Integer}
+    \item \texttt{corpseLifeSpan::Int}
 \end{itemize}
 \noindent Berikut semua data di satuan \texttt{corpse} yang bersifat dinamik atau bisa berubah seiring berjalannya waktu
 \begin{itemize}
-    \item \texttt{age::Integer}
-    \item \texttt{gridPosition::(Integer, Integer)}
-    \item \texttt{meatCount::Integer}
+    \item \texttt{age::Int}
+    \item \texttt{gridPosition::(Int, Int)}
+    \item \texttt{meatCount::Int}
 \end{itemize}
 \subsection{\texttt{Spesies}}
 Sebelum simulasi dimulai, kita bisa mendefinisikan spesies yang akan di simulasikan. Setiap spesies memiliki stat dasar dan variansi yang nantinya menjadi mean dan variansi dari distribusi normal untuk stat setiap makhluk hidup yang merupakan bagian dari spesies tersebut. Berikut adalah stat yang memerlukan konfigurasi awal untuk setiap spesies: 
 \begin{itemize}
-    \item \texttt{spesiesId::Integer} -- ID dari spesies untuk mempermudah pengambilan data
+    \item \texttt{spesiesId::Int} -- ID dari spesies untuk mempermudah pengambilan data
     \item \texttt{spesiesName::String} -- Nama spesies
-    \item \texttt{spesiesSeed::Integer} -- Seed untuk RNG
+    \item \texttt{spesiesSeed::Int} -- Seed untuk RNG
     \item \texttt{spesiesRole::Role\{Predator|Prey\}} -- Peran spesies dalam lingkungan, yaitu sebagai mangsa atau pemangsa
     \item \texttt{baseLearningRate::Double} -- Nilai rata-rata untuk menentukan seberapa cepat otak spesies belajar dan beradaptasi dari lingkungannya
     \item \texttt{varLearningRate::Double} -- variansi laju kecepatan otak makhluk hidup belajar
     \item \texttt{baseDiscountFactor::Double} -- Nilai rata-rata untuk mengontrol seberapa peduli spesies dengan \textit{reward} instan atau \textit{reward} jangka panjang
     \item \texttt{varDiscountFactor::Double} -- variansi faktor diskon 
     \item \texttt{baseLongevity::Integer} -- Rata-rata durasi kehidupan spesies dalam satuan waktu simulasi.
-    \item \texttt{varLongevity::Integer} -- Variansi durasi kehidupan antar makhluk hidup dalam satu spesies
-    \item \texttt{baseSpeed::Integer} -- Rata-rata kecepatan spesies dalam satuan \textit{grid} per waktu simulasi. Menggambarkan berapa banyak \textit{grid} yang bisa ditempuh spesies ketika bergerak dalam satu satuan waktu simulasi.
-    \item \texttt{varSpeed::Integer} -- Variansi kecepatan spesies antar makhluk hidup dalam satu spesies
-    \item \texttt{baseSenseRange::Integer} -- Rata-rata diameter rentang penglihatan spesies dalam satuan grid. Menggambarkan seberapa jauh makhluk hidup dapat mendeteksi sumber daya atau makhluk hidup lain di sekitarnya
-    \item \texttt{varSenseRange::Integer} -- Variansi diameter rentang penglihatan antar makhluk hidup dalam satu spesies
-    \item \texttt{baseMaxInventory::Integer} -- Rata-rata kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies dalam satuan sumber daya
-    \item \texttt{varMaxInventory::Integer} -- Variansi kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies
+    \item \texttt{varLongevity::Int} -- Variansi durasi kehidupan antar makhluk hidup dalam satu spesies
+    \item \texttt{baseSpeed::Int} -- Rata-rata kecepatan spesies dalam satuan \textit{grid} per waktu simulasi. Menggambarkan berapa banyak \textit{grid} yang bisa ditempuh spesies ketika bergerak dalam satu satuan waktu simulasi.
+    \item \texttt{varSpeed::Int} -- Variansi kecepatan spesies antar makhluk hidup dalam satu spesies
+    \item \texttt{baseSenseRange::Int} -- Rata-rata diameter rentang penglihatan spesies dalam satuan grid. Menggambarkan seberapa jauh makhluk hidup dapat mendeteksi sumber daya atau makhluk hidup lain di sekitarnya
+    \item \texttt{varSenseRange::Int} -- Variansi diameter rentang penglihatan antar makhluk hidup dalam satu spesies
+    \item \texttt{baseMaxInventory::Int} -- Rata-rata kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies dalam satuan sumber daya
+    \item \texttt{varMaxInventory::Int} -- Variansi kapasitas maksimal penyimpanan makanan pribadi yang dimiliki makhluk hidup dalam satu spesies
     \item \texttt{baseSize::Double} -- Rata-rata ukuran spesies
     \item \texttt{varSize::Double} -- Variansi ukuran spesies
     \item \texttt{baseStrength::Double} -- Rata-rata kekuatan spesies
@@ -156,7 +160,7 @@ Sebelum simulasi dimulai, kita bisa mendefinisikan spesies yang akan di simulasi
 \subsection{Makhluk Hidup (\texttt{Creature})}
 Makhluk hidup akan otomatis di-\textit{generate} saat simulasi dimulai. 
 \begin{itemize}
-    \item \texttt{creatureId::Integer} -- ID dari makhluk hidup tersebut
+    \item \texttt{creatureId::Int} -- ID dari makhluk hidup tersebut
     \item \texttt{creatureSpesies::Spesies} -- Spesies dari makhluk hidup tersebut
     \item \texttt{gender::Gender\{Male|Female\}} -- jenis kelamin dari makhluk hidup tersebut
     \item \texttt{genome::[Num]} -- Semua informasi seperti speed, senseRange, dan lain-lain akan dimasukkan sebagai genome dari makhluk hidup tersebut
@@ -164,12 +168,12 @@ Makhluk hidup akan otomatis di-\textit{generate} saat simulasi dimulai.
 \end{itemize}
 Berikut adalah data yang berubah seiring berjalannya waktu simulasi
 \begin{itemize}
-    \item \texttt{position::(Integer, Integer)}
-    \item \texttt{hunger::Integer} 
-    \item \texttt{thirst::Integer}
-    \item \texttt{energy::Integer}
-    \item \texttt{age::Integer}
-    \item \texttt{inventory::Integer}
+    \item \texttt{position::(Int, Int)}
+    \item \texttt{hunger::Int} 
+    \item \texttt{thirst::Int}
+    \item \texttt{energy::Int}
+    \item \texttt{age::Int}
+    \item \texttt{inventory::Int}
 \end{itemize}
 
 \subsection{Reproduksi}

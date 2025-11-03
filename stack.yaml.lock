@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: pure-noise-0.2.0.0@sha256:98c8859219dfd53e42efcbba0613822385d482cc77c1a3ad2407844bce2ae43f,3324
+    hackage: MonadRandom-0.6.2@sha256:a5f8a837e993c008dbcdb61a92a8dbfbbb1231c7fe41439e5ecccd1e9114d8d1,1481
     pantry-tree:
-      sha256: 53f7ffb8d0b7b0c46df5d721ac8c5b0ac77e1e7fc0ab70f2acfa38c6d99d9374
-      size: 1299
+      sha256: ccc961213ddc5d940014316228c4f91035f515173c198ff22d01d73ac41ad28d
+      size: 709
   original:
-    hackage: pure-noise-0.2.0.0
+    hackage: MonadRandom-0.6.2
 snapshots:
 - completed:
     sha256: db422bffc7b66cea3ad1dfa71440d1209e37b6233c4080eb2ea1fb9b91eacde5

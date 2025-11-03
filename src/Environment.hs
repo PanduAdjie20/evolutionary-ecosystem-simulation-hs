@@ -12,16 +12,22 @@ instance Show Tile where
   show Water = "#"
 
 type Grid = [[Tile]]
-type Vector2D = (Double, Double)
 type Seed = Int 
 
 data WorldConfig = WorldConfig {
-    gridWidth    :: Int,
-    gridHeight   :: Int,
-    frequency    :: Double, 
-    waterPercent :: Double,
-    worldSeed    :: Seed 
+  gridWidth           :: Int,
+  gridHeight          :: Int,
+  frequency           :: Double, 
+  waterPercent        :: Double,
+  initialWorldSeed    :: Seed 
 }
+
+-- data Environment = Environment {
+--   currTime :: Int,
+--   currFruitBush :: [FruitBush],
+--   currCreature :: [Creature],
+-- }
+
 
 prime1, prime2 :: Int
 prime1 = 501125321
@@ -34,7 +40,7 @@ hash n' = n2 `xor` (n2 `shiftR` 16)
     n1 = n * prime1
     n2 = (n1 `xor` (n1 `shiftR` 14)) * prime2
 
-getGradient :: (Int, Int) -> Seed -> Vector2D
+getGradient :: (Int, Int) -> Seed -> (Double, Double)
 getGradient (ix, iy) seed = gradients !! idx
   where
     gradients = [(1, 1), (-1, 1), (1, -1), (-1, -1),
@@ -50,7 +56,7 @@ lerp t a b = a + t * (b - a)
 fade :: Double -> Double
 fade t = t * t * t * (t * (t * 6 - 15) + 10)
 
-dotProduct :: Vector2D -> Vector2D -> Double
+dotProduct :: (Double, Double) -> (Double, Double) -> Double
 dotProduct (x1, y1) (x2, y2) = x1 * x2 + y1 * y2
 
 perlin2D :: Seed -> Double -> Double -> Double
@@ -89,7 +95,8 @@ generateNoiseGrid cfg = [ [ getNoiseValue r c | c <- [0..gridWidth cfg - 1] ] | 
     getNoiseValue r c =
       let x = fromIntegral c * frequency cfg
           y = fromIntegral r * frequency cfg
-      in perlin2D (worldSeed cfg) x y
+      in perlin2D (initialWorldSeed cfg) x y
+
 
 generateWorld :: WorldConfig -> Grid
 generateWorld cfg
@@ -108,8 +115,8 @@ generateWorld cfg
 
         
 
-prettyPrintGrid :: Grid -> IO ()
-prettyPrintGrid grid = putStrLn $ unlines $ map (concatMap show) grid
+printGrid :: Grid -> IO ()
+printGrid grid = putStrLn $ unlines $ map (concatMap show) grid
 
 
 

@@ -64,7 +64,8 @@ library
     -- Modules exported by the library.
     exposed-modules:
         Environment,
-        Resources
+        Resources, 
+        Species
 
     -- Modules included in this library but not exported.
     -- other-modules: 
@@ -76,7 +77,10 @@ library
     -- Other library packages from which modules are imported.
     build-depends:    
         base ^>=4.20.2.0,
-        random
+        random,
+        mtl,
+        MonadRandom ^>=0.6.2,
+        statistics
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -101,10 +105,10 @@ executable evolutionary-ecosystem-simulation-hs
     build-depends:
         base ^>=4.20.2.0,
         evolutionary-ecosystem-simulation-hs,
-        pure-noise,
-        containers, 
-        vector,
-        random
+        random,
+        mtl,
+        MonadRandom ^>=0.6.2,
+        statistics
 
     -- Directories containing source files.
     hs-source-dirs:   app
@@ -138,7 +142,7 @@ test-suite evolutionary-ecosystem-simulation-hs-test
     build-depends:
         base ^>=4.20.0,
         evolutionary-ecosystem-simulation-hs,
-        pure-noise,
-        containers, 
-        vector, 
-        random
+        random,
+        mtl,
+        MonadRandom ^>=0.6.2,
+        statistics

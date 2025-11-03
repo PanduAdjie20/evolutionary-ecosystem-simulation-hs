@@ -12,7 +12,7 @@ main = do
     gridHeight   = 50,
     frequency    = 0.07, 
     waterPercent = 0.1,
-    worldSeed    = 67
+    initialWorldSeed    = 67
   }
 
   let bushConfig = FruitBushConfig {
@@ -33,14 +33,14 @@ main = do
   putStrLn $ "Target Persentase Air: " ++ show (waterPercent wconfig * 100) ++ "%"
 
 
-  prettyPrintGrid worldGrid
+  printGrid worldGrid
 
   --let noiseGrid = generateNoiseGrid wconfig
 
   --putStrLn $ show noiseGrid 
 
   -- Verifikasi hasil
-  let total = fromIntegral (gridWidth wconfig * gridHeight wconfig)
-      waterCount = fromIntegral $ length $ filter (== Water) (concat worldGrid)
-      actualPercent = (waterCount / total) * 100
-  putStrLn $ "Persentase Air Aktual: " ++ show actualPercent ++ "%"
+  --let total = fromIntegral (gridWidth wconfig * gridHeight wconfig)
+  --    waterCount = fromIntegral $ length $ filter (== Water) (concat worldGrid)
+  --    actualPercent = (waterCount / total) * 100
+  --putStrLn $ "Persentase Air Aktual: " ++ show actualPercent ++ "%"
